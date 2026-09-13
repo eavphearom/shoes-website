@@ -19,10 +19,10 @@ const payments = [
   { name: "ABA", image: abaLogo },
 ];
 const socialLinks = [
-  { name: "Facebook", image: facebookLogo },
-  { name: "Instagram", image: instagramLogo },
-  { name: "TikTok", image: tiktokLogo },
-  { name: "Telegram", image: telegramLogo },
+  { name: "Facebook", image: facebookLogo, url: "https://www.facebook.com/share/1AmqPeoqk3/?mibextid=wwXIfr" },
+  { name: "Instagram", image: instagramLogo, url: "https://www.tiktok.com/@phearumsingle4?_r=1&_t=ZS-99hSfUlkI35" },
+  { name: "TikTok", image: tiktokLogo, url: "https://www.tiktok.com/@phearumsingle4?_r=1&_t=ZS-99hSfUlkI35" },
+  { name: "Telegram", image: telegramLogo, url: "https://t.me/eav_phearom" },
 ];
 
 
@@ -47,9 +47,11 @@ export default function Footer() {
 
             <div className="mt-6 flex items-center gap-3">
               {socialLinks.map((social) => (
-                <Link
+                <a
                   key={social.name}
-                  to="/"
+                  href={social.url}
+                  target="_blank"
+                  rel="noreferrer"
                   className="flex h-9 w-9 items-center justify-center overflow-hidden rounded-full bg-[#ffffff] p-2 transition duration-300 hover:-translate-y-0.5  hover:shadow-[0_12px_24px_rgba(249,115,22,0.24)]"
                   aria-label={social.name}
                 >      
@@ -58,7 +60,7 @@ export default function Footer() {
                     alt=""
                     className="h-full w-full object-contain"
                   />
-                </Link>
+                </a>
               ))}
             </div>
           </div>

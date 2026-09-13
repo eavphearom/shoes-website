@@ -1,5 +1,5 @@
-import { ChevronDown, LayoutGrid, List } from "lucide-react";
-import { useState } from "react";
+import { ChevronDown, LayoutGrid, List, SlidersHorizontal, X } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import productImage from "../../assets/product/image.png";
 import productImageAlt from "../../assets/product/images.png";
@@ -102,6 +102,7 @@ const products = [
 ];
 
 const categories = [
+  "All Categories (120)",
   "Our Store (24)",
   "Running (32)",
   "Training (18)",
@@ -143,12 +144,20 @@ function FilterContent() {
     <div className="space-y-5">
       <FilterPanel title="Shop By Categories">
         <div className="grid gap-3">
-          {categories.map((category) => (
+          {categories.map((category, index) => (
             <label
               key={category}
               className="flex cursor-pointer items-center gap-3 text-sm font-medium text-[#4B5563] transition hover:text-[#F97316]"
             >
-              <span className="flex h-4 w-4 items-center justify-center rounded border border-[#D8DEE7] bg-white" />
+              <span
+                className={`flex h-4 w-4 items-center justify-center rounded border ${
+                  index === 0
+                    ? "border-[#F97316] bg-[#F97316]"
+                    : "border-[#D8DEE7] bg-white"
+                }`}
+              >
+                {index === 0 && <span className="h-1.5 w-1.5 rounded-full bg-white" />}
+              </span>
               <span>{category}</span>
             </label>
           ))}
@@ -225,9 +234,25 @@ function FilterContent() {
 }
 
 export default function Shop() {
+  const sortRef = useRef(null);
   const [viewMode, setViewMode] = useState("grid");
   const [selectedSort, setSelectedSort] = useState(sortOptions[0]);
   const [isSortOpen, setIsSortOpen] = useState(false);
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (sortRef.current && !sortRef.current.contains(event.target)) {
+        setIsSortOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   return (
     <div>
@@ -244,7 +269,7 @@ export default function Shop() {
             <h1 className="mt-2 font-michroma text-2xl font-extrabold uppercase tracking-wide text-[#07182E] sm:text-3xl">
               Shop
             </h1>
-            <p className="mt-2 text-xs font-medium text-[#64748B] sm:text-sm">
+            <p className="mt-2 text-xs font-michroma text-[#64748B] sm:text-sm">
               Discover our latest collection of stylish and comfortable shoes
             </p>
           </div>
@@ -254,21 +279,30 @@ export default function Shop() {
 
       <section className="mx-auto max-w-[1500px] px-4 py-7 sm:px-6 lg:px-8 lg:pb-8">
         <div className="grid gap-6 md:grid-cols-[230px_minmax(0,1fr)] lg:grid-cols-[260px_minmax(0,1fr)] xl:grid-cols-[280px_minmax(0,1fr)]">
-          <div>
+          <div className="hidden md:sticky md:top-24 md:block md:max-h-[calc(100vh-112px)] md:overflow-y-auto md:pb-4 md:pr-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
             <FilterContent />
           </div>
-          {/* <aside className="relative z-20">
-            <FilterContent />
-          </aside> */}
 
           <div className="min-w-0 pt-0">
             <div className="mb-5 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-              <p className="text-sm font-medium text-[#475569]">
+              <p className="text-sm font-medium 3text-[#475569]">
                 Showing 1-12 of 24 results
               </p>
 
               <div className="flex flex-wrap items-center gap-2 sm:justify-end">
-                <div className="relative flex h-10 items-center gap-2 rounded-lg bg-white px-2">
+                <button
+                  type="button"
+                  onClick={() => setIsFilterOpen(true)}
+                  className="inline-flex h-10 items-center cursor-pointer gap-2 rounded-lg border border-[#E6EAF0] bg-white px-3 text-sm font-mono text-[#212838] transition hover:border-[#F97316] hover:text-[#F97316] md:hidden"
+                >
+                  <SlidersHorizontal size={17} />
+                  Filter
+                </button>
+
+                <div
+                  ref={sortRef}
+                  className="relative flex h-10 items-center gap-2 rounded-lg bg-white px-2"
+                >
                   <span className="hidden text-sm font-medium text-[#64748B] sm:inline">
                     Sort by:
                   </span>
@@ -390,6 +424,43 @@ export default function Shop() {
           </div>
         </div>
       </section>
+
+      <div
+        className={`fixed inset-0 z-[80] transition md:hidden ${
+          isFilterOpen ? "pointer-events-auto" : "pointer-events-none"
+        }`}
+      >
+        <button
+          type="button"
+          aria-label="Close filters"
+          onClick={() => setIsFilterOpen(false)}
+          className={`absolute inset-0 bg-[#07182E]/45 transition-opacity duration-300 ${
+            isFilterOpen ? "opacity-100" : "opacity-0"
+          }`}
+        />
+
+        <div
+          className={`absolute inset-y-0 left-0 w-[86%] max-w-[340px] overflow-y-auto bg-white px-4 py-5 shadow-[18px_0_45px_rgba(15,23,42,0.2)] transition-transform duration-300 ease-out ${
+            isFilterOpen ? "translate-x-0" : "-translate-x-full"
+          }`}
+        >
+          <div className="mb-5 flex items-center justify-between">
+            <h2 className="font-michroma text-base font-extrabold text-[#07182E]">
+              Filters
+            </h2>
+            <button
+              type="button"
+              onClick={() => setIsFilterOpen(false)}
+              className="flex h-9 w-9 items-center justify-center rounded-full bg-[#F3F4F6] text-[#07182E] transition hover:bg-[#F97316] hover:text-white"
+              aria-label="Close filters"
+            >
+              <X size={18} />
+            </button>
+          </div>
+
+          <FilterContent />
+        </div>
+      </div>
     </div>
   );
 }

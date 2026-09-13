@@ -9,6 +9,7 @@ import About from "../pages/about/About";
 import Blog from "../pages/blog/Blog";
 import Contact from "../pages/contact/Contact";
 import Wishlist from "../pages/wishlist/Wishlist";
+import ProductDetail from "../pages/product/ProductDetail";
 
 export default function AppRoutes() {
   return (
@@ -21,6 +22,7 @@ export default function AppRoutes() {
         <Route path="/blog" element={<Blog />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/wishlist" element={<Wishlist />} />
+        <Route path="/product/:slug" element={<ProductDetail />} />
       </Route>
 
       <Route path="/login" element={<LoginPage />} />

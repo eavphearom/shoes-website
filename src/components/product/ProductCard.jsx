@@ -1,4 +1,15 @@
 import { Heart, Star } from "lucide-react";
+import { Link } from "react-router-dom";
+
+function getProductPath(name) {
+  const slug = name
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+
+  return `/product/${slug}`;
+}
 
 export default function ProductCard({
   image,
@@ -11,21 +22,24 @@ export default function ProductCard({
   reviews,
 }) {
   const displayPrice = priceRange || price;
+  const productPath = getProductPath(name);
 
   return (
     <article className="group rounded-2xl bg-white p-3 shadow-[0_10px_28px_rgba(15,23,42,0.07)] sm:p-4">
       <div className="relative overflow-hidden rounded-xl bg-[#F3EFE8]">
-        <img
-          src={image}
-          alt={name}
-          className="aspect-[1.45/1] w-full object-cover transition duration-300 group-hover:scale-105"
-        />
+        <Link to={productPath} className="block">
+          <img
+            src={image}
+            alt={name}
+            className="aspect-[1.45/1] w-full object-cover transition duration-300 group-hover:scale-105"
+          />
 
-        {discount && (
-          <span className="absolute left-2 top-2 rounded-full bg-[#ec6614] px-2 py-0.5 text-[9px] font-bold text-white shadow-sm sm:left-3 sm:top-3 sm:px-3 sm:py-1 sm:text-[10px]">
-            {discount}
-          </span>
-        )}
+          {discount && (
+            <span className="absolute left-2 top-2 rounded-full bg-[#ec6614] px-2 py-0.5 text-[9px] font-bold text-white shadow-sm sm:left-3 sm:top-3 sm:px-3 sm:py-1 sm:text-[10px]">
+              {discount}
+            </span>
+          )}
+        </Link>
 
         <button
           type="button"
@@ -43,9 +57,12 @@ export default function ProductCard({
           Men's Shoes
         </p> */}
 
-        <h3 className="mt-1 truncate text-[11px] font-semibold leading-snug text-[#3e3f42] sm:text-[13px]">
+        <Link
+          to={productPath}
+          className="mt-1 block truncate text-[11px] font-semibold leading-snug text-[#3e3f42] transition hover:text-[#E96400] sm:text-[13px]"
+        >
           {name}
-        </h3>
+        </Link>
 
         <div className="mt-1 flex items-center gap-1.5 text-[9px] font-semibold text-[#64748B] sm:text-[10px]">
           <span className="flex items-center gap-0.5 text-[#F59E0B]">

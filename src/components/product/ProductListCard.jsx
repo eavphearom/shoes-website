@@ -1,4 +1,15 @@
 import { Star } from "lucide-react";
+import { Link } from "react-router-dom";
+
+function getProductPath(name) {
+  const slug = name
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+
+  return `/product/${slug}`;
+}
 
 function StarsRow({ rating = "4.8", reviews = "120" }) {
   return (
@@ -31,10 +42,14 @@ export default function ProductListCard({
   description,
 }) {
   const displayPrice = priceRange || price;
+  const productPath = getProductPath(name);
 
   return (
     <article className="grid gap-5 rounded-lg border border-[#E6EAF0] bg-white p-3 sm:grid-cols-[220px_1fr] sm:p-4 lg:grid-cols-[280px_1fr]">
-      <div className="relative overflow-hidden rounded-lg bg-[#F3F4F6]">
+      <Link
+        to={productPath}
+        className="relative block overflow-hidden rounded-lg bg-[#F3F4F6]"
+      >
         <img
           src={image}
           alt={name}
@@ -45,20 +60,23 @@ export default function ProductListCard({
             {discount}
           </span>
         )}
-      </div>
+      </Link>
 
       <div className="flex flex-col justify-center">
         {/* <p className="text-xs font-bold uppercase tracking-wide text-[#A7B2C3]">
           {category}
         </p> */}
-        <h3 className="mt-2 text-md font-semibold leading-snug text-[#07182E]">
+        <Link
+          to={productPath}
+          className="mt-2 text-md font-semibold leading-snug text-[#07182E] transition hover:text-[#E96400]"
+        >
           {name}
-        </h3>
+        </Link>
         <div className="mt-3">
           <StarsRow rating={rating} reviews={reviews} />
         </div>
         <div className="mt-3 flex items-center gap-3">
-          <span className="text-lg font-extrabold text-[#F97316]">
+          <span className="text-lg font-semibold text-[#F97316]">
             {displayPrice}
           </span>
           {oldPrice && (

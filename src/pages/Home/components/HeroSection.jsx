@@ -89,7 +89,15 @@ export default function HeroSection() {
         ))}
       </Swiper>
 
-      <div className="hero-carousel-pagination absolute right-auto! bottom-8 left-1/2! z-10 flex w-auto! -translate-x-1/2! items-center justify-center gap-3 [&_.swiper-pagination-bullet-active]:w-[34px] [&_.swiper-pagination-bullet-active]:rounded-full [&_.swiper-pagination-bullet-active]:bg-[#E96400] [&_.swiper-pagination-bullet]:mx-[5px] [&_.swiper-pagination-bullet]:h-2.5 [&_.swiper-pagination-bullet]:w-2.5 [&_.swiper-pagination-bullet]:bg-white/75 [&_.swiper-pagination-bullet]:opacity-100 [&_.swiper-pagination-bullet]:transition-all" />
+      <div
+        className="hero-carousel-pagination absolute right-auto! bottom-5 left-1/2! 
+      z-10 flex w-auto! -translate-x-1/2! items-center justify-center gap-2 [&_.swiper-pagination-bullet-active]:w-8 [&_.swiper-pagination-bullet-active]:bg-[#E96400] [&_.swiper-pagination-bullet]:mx-0! [&_.swiper-pagination-bullet]:h-2.5 
+      [&_.swiper-pagination-bullet]:w-2.5 
+      [&_.swiper-pagination-bullet]:rounded-full 
+      [&_.swiper-pagination-bullet]:bg-[#E96400]
+       [&_.swiper-pagination-bullet]:opacity-100 [&_.swiper-pagination-bullet]:transition-all [&_.swiper-pagination-bullet]:duration-500 
+       [&_.swiper-pagination-bullet]:ease-out"
+      />
 
       <div className="absolute bottom-8 right-5 z-10 hidden gap-3 sm:flex">
         <button
