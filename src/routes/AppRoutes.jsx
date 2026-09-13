@@ -8,16 +8,19 @@ import Shop from "../pages/shop/Shop";
 import About from "../pages/about/About";
 import Blog from "../pages/blog/Blog";
 import Contact from "../pages/contact/Contact";
+import Wishlist from "../pages/wishlist/Wishlist";
 
 export default function AppRoutes() {
   return (
     <Routes>
+      
       <Route element={<MainLayout />}>
         <Route index element={<Home />} />
         <Route path="/shop" element={<Shop />} />
         <Route path="/about" element={<About />} />
         <Route path="/blog" element={<Blog />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="/wishlist" element={<Wishlist />} />
       </Route>
 
       <Route path="/login" element={<LoginPage />} />

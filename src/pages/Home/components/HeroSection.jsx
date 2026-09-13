@@ -7,7 +7,7 @@ import "swiper/css";
 import "swiper/css/effect-fade";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import banner1 from "../../../assets/banner/banner1.png";
+import banner4 from "../../../assets/banner/banner4.png";
 import banner2 from "../../../assets/banner/banner2.png";
 import banner3 from "../../../assets/banner/banner3.png";
 
@@ -15,7 +15,7 @@ const heroSlides = [
   {
     eyebrow: "Classy Collection",
     title: "Run, don't hide",
-    image: banner1,
+    image: banner4,
     align: "object-center",
   },
   {
@@ -94,14 +94,14 @@ export default function HeroSection() {
       <div className="absolute bottom-8 right-5 z-10 hidden gap-3 sm:flex">
         <button
           type="button"
-          className="hero-carousel-prev flex h-11 w-11 items-center justify-center rounded-full bg-white/90 text-black shadow-lg transition hover:bg-[#E96400] hover:text-white"
+          className="hero-carousel-prev flex h-11 w-11 items-center cursor-pointer justify-center rounded-full bg-white/90 text-black shadow-lg transition hover:bg-[#E96400] hover:text-white"
           aria-label="Previous slide"
         >
           <ChevronLeft size={22} />
         </button>
         <button
           type="button"
-          className="hero-carousel-next flex h-11 w-11 items-center justify-center rounded-full bg-white/90 text-black shadow-lg transition hover:bg-[#E96400] hover:text-white"
+          className="hero-carousel-next flex h-11 w-11 cursor-pointer items-center justify-center rounded-full bg-white/90 text-black shadow-lg transition hover:bg-[#E96400] hover:text-white"
           aria-label="Next slide"
         >
           <ChevronRight size={22} />

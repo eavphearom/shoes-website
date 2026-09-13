@@ -9,7 +9,7 @@ import sneakersImage from "../../../assets/product/images.png";
 export default function CollectionsSection() {
   return (
     <section>
-      <div className="mx-auto max-w-7xl px-4 pt-15 pb-10 sm:px-6 lg:px-8">
+      <div className="mx-auto px-4 pb-8 pt-12 sm:px-6 sm:pb-10 sm:pt-14 lg:px-8 lg:pb-60 lg:pt-16">
         {/* Header */}
         <div className="mb-7 flex items-start justify-between gap-4">
           <div>
@@ -108,7 +108,7 @@ export default function CollectionsSection() {
             {/* Bottom Card */}
             <Link
               to="/shop"
-              className="group relative h-[200px] overflow-hidden rounded-lg bg-[#F3F4F6]"
+              className="group relative h-[220px] overflow-hidden rounded-lg bg-[#F3F4F6]"
             >
               <img
                 src={banner1}

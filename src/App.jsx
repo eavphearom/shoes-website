@@ -1,6 +1,11 @@
+import { useLocation } from "react-router-dom";
 import AppRoutes from "./routes/AppRoutes";
+import SplashScreen from "./components/common/SplashScreen";
 
 function App() {
+  const location = useLocation();
+  const showHomeSplash = location.pathname === "/";
+
   // return (
   //   <div className="p-10">
   //     <h1 className="text-3xl font-bold">
@@ -12,7 +17,12 @@ function App() {
   //     </button>
   //   </div>
   // );
-  return <AppRoutes />;
+  return (
+    <>
+      <SplashScreen enabled={showHomeSplash} />
+      <AppRoutes />
+    </>
+  );
 }
 
 export default App;

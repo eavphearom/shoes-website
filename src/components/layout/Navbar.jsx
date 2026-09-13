@@ -53,6 +53,7 @@ function CounterBadge() {
 export default function Navbar() {
   const { pathname } = useLocation();
   const [hasScrolled, setHasScrolled] = useState(false);
+  3;
   const canUseTransparentHeader = transparentHeaderRoutes.includes(pathname);
   const shouldShowTransparentHeader = canUseTransparentHeader && !hasScrolled;
 
@@ -105,23 +106,23 @@ export default function Navbar() {
             <button
               type="button"
               aria-label="Search"
-              className="transition hover:text-[#F97316]"
+              className="transition cursor-pointer hover:text-[#F97316]"
             >
-              <Search size={23} strokeWidth={2.2} />
+              <Search size={20} strokeWidth={2.2} />
             </button>
             <Link
-              to="/shop"
+              to="/wishlist"
               aria-label="Wishlist"
-              className="relative transition hover:text-[#F97316]"
+              className="relative transition cursor-pointer hover:text-[#F97316]"
             >
-              <Heart size={23} strokeWidth={2.2} />
+              <Heart size={20} strokeWidth={2.2} />
             </Link>
             <Link
-              to="/shop"
+              to="/cart"
               aria-label="Cart"
               className="relative transition hover:text-[#F97316]"
             >
-              <ShoppingBag size={23} strokeWidth={2.2} />
+              <ShoppingBag size={20} strokeWidth={2.2} />
               <CounterBadge />
             </Link>
           </div>
@@ -130,31 +131,32 @@ export default function Navbar() {
             <button
               type="button"
               aria-label="Search"
-              className="transition hover:text-[#F97316]"
+              className="transition cursor-pointer hover:text-[#F97316]"
             >
-              <Search size={29} strokeWidth={2.2} />
+              <Search size={22} strokeWidth={2.2} />
             </button>
+
+            <Link
+              to="/wishlist"
+              aria-label="Wishlist"
+              className="relative transition hover:text-[#F97316]"
+            >
+              <Heart size={22} strokeWidth={2.2} />
+            </Link>
+            <Link
+              to="/cart"
+              aria-label="Cart"
+              className="relative transition hover:text-[#F97316]"
+            >
+              <ShoppingBag size={22} strokeWidth={2.2} />
+              <CounterBadge />
+            </Link>
             <Link
               to="/login"
               aria-label="Account"
               className="transition hover:text-[#F97316]"
             >
-              <User size={29} strokeWidth={2.2} />
-            </Link>
-            <Link
-              to="/shop"
-              aria-label="Wishlist"
-              className="relative transition hover:text-[#F97316]"
-            >
-              <Heart size={29} strokeWidth={2.2} />
-            </Link>
-            <Link
-              to="/shop"
-              aria-label="Cart"
-              className="relative transition hover:text-[#F97316]"
-            >
-              <ShoppingBag size={29} strokeWidth={2.2} />
-              <CounterBadge />
+              <User size={22} strokeWidth={2.2} />
             </Link>
           </div>
         </div>
