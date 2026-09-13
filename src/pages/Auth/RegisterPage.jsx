@@ -7,7 +7,7 @@ import {
   Mail,
 } from "lucide-react";
 import googleIcon from "../../assets/google.png";
-import AuthVisualPanel from "../../features/auth/components/AuthVisualPanel";
+import heroShoe from "../../assets/auth-shoe.png";
 import Button from "../../components/ui/Button";
 
 export default function RegisterPage() {
@@ -43,15 +43,27 @@ export default function RegisterPage() {
 
   return (
     <div className="grid min-h-screen bg-white lg:grid-cols-[1fr_1fr]">
-      <AuthVisualPanel
-        brand="SOLE_PRECISION"
-        subtitle="Performance Studio"
-        headline="Engineered for Performance."
-        description="Build your product catalog, track categories, and manage every step of your footwear business."
-      />
+      <aside className="hidden items-center justify-center bg-[#F8FAFC] p-10 lg:flex">
+        <div className="max-w-lg">
+          <Link to="/" className="text-sm font-bold uppercase tracking-[0.2em] text-[#2563EB]">
+            SoleStore
+          </Link>
+          <h1 className="mt-5 font-heading text-4xl font-bold leading-tight text-[#111827]">
+            Create an account for faster checkout.
+          </h1>
+          <p className="mt-4 leading-7 text-[#4B5563]">
+            Save favorite styles, keep your details ready, and get back to the
+            collection quickly.
+          </p>
+          <img src={heroShoe} alt="Shoe" className="mt-10 w-full object-contain" />
+        </div>
+      </aside>
 
       <main className="flex min-h-screen items-center justify-center px-6 py-10">
         <form onSubmit={handleSubmit} className="w-full max-w-md">
+          <Link to="/" className="mb-8 inline-block text-sm font-bold text-[#2563EB]">
+            Back to store
+          </Link>
           <div className="mb-7">
             <h1 className="text-2xl font-bold text-[#03152B]">
               Create Your Account

@@ -1,110 +1,146 @@
-import { Bell, PanelLeftClose, PanelLeftOpen } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
-import { Link } from "react-router-dom";
-import { useAuth } from "../../features/auth/hooks/useAuth";
+import {
+  Heart,
+  Home,
+  Search,
+  ShoppingBag,
+  ShoppingCart,
+  Store,
+  User,
+} from "lucide-react";
+import { useEffect, useState } from "react";
+import { Link, NavLink, useLocation } from "react-router-dom";
 
-export default function Navbar({
-  isSidebarCollapsed = false,
-  onMenuClick,
-  onSidebarToggle,
-}) {
-  const { user } = useAuth();
-  const displayName = user?.name || "Admin User";
-  const [currentTime, setCurrentTime] = useState(new Date());
+const transparentHeaderRoutes = ["/"];
 
-  const initials = useMemo(() => {
-    return displayName
-      .split(" ")
-      .map((name) => name[0])
-      .join("")
-      .slice(0, 2)
-      .toUpperCase();
-  }, [displayName]);
+const desktopLinks = [
+  { label: "Home", to: "/" },
+  { label: "Shop", to: "/shop" },
+  { label: "Category", to: "/shop" },
+  { label: "About", to: "/about" },
+  { label: "Contact", to: "/contact" },
+  { label: "Blog", to: "/blog" },
+];
+
+const mobileLinks = [
+  { label: "Home", to: "/", icon: Home },
+  { label: "Shop", to: "/shop", icon: Store },
+  { label: "Cart", to: "/shop", icon: ShoppingCart },
+  { label: "Account", to: "/login", icon: User },
+];
+
+function desktopLinkClass({ isActive }) {
+  return `flex items-center gap-1.5 text-sm font-bold transition lg:text-base ${
+    isActive ? "text-[#F97316]" : "text-[#111827] hover:text-[#F97316]"
+  }`;
+}
+
+function mobileLinkClass({ isActive }) {
+  return `flex flex-1 flex-col items-center justify-center gap-1 rounded-[22px] py-2 text-[10px] font-bold transition-all duration-300 ${
+    isActive
+      ? "bg-white/80 text-[#F97316] shadow-[0_10px_25px_rgba(15,23,42,0.12)] ring-1 ring-white/70"
+      : "text-[#64748B] hover:bg-white/45 hover:text-[#111827]"
+  }`;
+}
+
+function CounterBadge() {
+  return (
+    <span className="absolute -right-2 -top-2 flex h-5 min-w-5 items-center justify-center rounded-full bg-[#F97316] px-1 text-[11px] font-bold leading-none text-white">
+      0
+    </span>
+  );
+}
+
+export default function Navbar() {
+  const { pathname } = useLocation();
+  const [hasScrolled, setHasScrolled] = useState(false);
+  const canUseTransparentHeader = transparentHeaderRoutes.includes(pathname);
+  const shouldShowTransparentHeader = canUseTransparentHeader && !hasScrolled;
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentTime(new Date());
-    }, 1000);
+    const handleScroll = () => {
+      setHasScrolled(window.scrollY > 24);
+    };
 
-    return () => clearInterval(timer);
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const formattedTime = currentTime.toLocaleTimeString("en-US", {
-    hour: "2-digit",
-    minute: "2-digit",
-    second: "2-digit",
-  });
-
   return (
-    <header className="sticky top-0 z-30 border-b border-[#E2E8F0] bg-white px-4 sm:px-6">
-      <div className="flex h-14 items-center justify-between gap-4">
-        <div className="flex items-center gap-3">
-          <button
-            type="button"
-            onClick={onMenuClick}
-            className="rounded-lg border border-[#D7DFEA] p-2 text-[#64748B] lg:hidden"
-            aria-label="Open sidebar"
-          >
-            <PanelLeftOpen size={20} />
-          </button>
+    <>
+      <header
+        className={`inset-x-0 top-0 z-40 transition-all duration-300 ${
+          shouldShowTransparentHeader
+            ? "absolute border-b border-transparent bg-transparent"
+            : canUseTransparentHeader
+            ? "fixed border-b border-[#E5E7EB] bg-white/95 shadow-[0_10px_30px_rgba(15,23,42,0.08)] backdrop-blur"
+            : "sticky border-b border-[#E5E7EB] bg-white"
+        }`}
+      >
+        <div className="mx-auto flex h-[74px] max-w-[1800px] items-center justify-between px-4 sm:px-6 lg:px-12">
+          <Link to="/" className="flex items-end gap-1">
+            <span className="text-3xl font-extrabold leading-none tracking-tight text-[#F97316]">
+              Go
+            </span>
+            <ShoppingBag size={34} className="-mb-1 text-[#F97316]" />
+            <span className="text-3xl font-extrabold leading-none tracking-tight text-[#111827]">
+              shoes
+            </span>
+          </Link>
 
-          <button
-            type="button"
-            onClick={onSidebarToggle}
-            className="hidden rounded-lg border border-[#D7DFEA] p-2 text-[#64748B] transition hover:bg-[#F1F5F9] hover:text-[#03152B] lg:inline-flex"
-            aria-label={isSidebarCollapsed ? "Show sidebar" : "Hide sidebar"}
-            title={isSidebarCollapsed ? "Show sidebar" : "Hide sidebar"}
-          >
-            {isSidebarCollapsed ? (
-              <PanelLeftOpen size={18} />
-            ) : (
-              <PanelLeftClose size={18} />
-            )}
-          </button>
+          <nav className="hidden items-center gap-4 md:flex lg:gap-9">
+            {desktopLinks.map((link) => (
+              <NavLink key={link.label} to={link.to} className={desktopLinkClass}>
+                <span>{link.label}</span>
+              </NavLink>
+            ))}
+          </nav>
 
-          {/* <label className="relative hidden w-72 sm:block lg:w-96">
-            <Search
-              size={16}
-              className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-[#8A98AA]"
-            />
-            <input
-              type="search"
-              placeholder="Search"
-              className="h-9 w-full rounded-lg border border-[#D7DFEA] bg-[#F7F9FC] pl-9 pr-3 text-sm text-[#03152B] outline-none transition placeholder:text-[#8A98AA] focus:border-[#2E7AF0] focus:bg-white focus:ring-2 focus:ring-[#2E7AF0]/10"
-            />
-          </label> */}
-        </div>
-
-        <div className="flex items-center cursor-pointer gap-4">
-          <div className="hidden rounded-lg px-3 py-2 text-sm font-semibold text-[#03152B] sm:block">
-            {formattedTime}
+          <div className="flex items-center gap-4 text-[#111827] md:hidden">
+            <button type="button" aria-label="Search" className="transition hover:text-[#F97316]">
+              <Search size={23} strokeWidth={2.2} />
+            </button>
+            <Link to="/shop" aria-label="Wishlist" className="relative transition hover:text-[#F97316]">
+              <Heart size={23} strokeWidth={2.2} />
+            </Link>
+            <Link to="/shop" aria-label="Cart" className="relative transition hover:text-[#F97316]">
+              <ShoppingBag size={23} strokeWidth={2.2} />
+              <CounterBadge />
+            </Link>
           </div>
 
-          <button
-            type="button"
-            className="relative rounded-lg p-2 text-[#475569] transition cursor-pointer hover:bg-[#F1F5F9]"
-            aria-label="Notifications"
-          >
-            <Bell size={18} />
-            <span className="absolute right-2 top-2 h-1.5 w-1.5 rounded-full bg-[#D92525]" />
-          </button>
-
-          <Link
-            to="/profile"
-            className="flex items-center gap-3 rounded-lg p-1 transition hover:bg-[#F1F5F9]"
-          >
-            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#EAF1FF] text-xs font-bold text-[#2E7AF0] ring-1 ring-[#D7E5FF]">
-              {initials}
-            </div>
-            <div className="hidden sm:block">
-              <p className="text-xs font-semibold text-[#03152B]">
-                {displayName}
-              </p>
-              <p className="text-[11px] text-[#64748B]">Superadmin</p>
-            </div>
-          </Link>
+          <div className="hidden items-center gap-6 text-[#111827] md:flex">
+            <button type="button" aria-label="Search" className="transition hover:text-[#F97316]">
+              <Search size={29} strokeWidth={2.2} />
+            </button>
+            <Link to="/login" aria-label="Account" className="transition hover:text-[#F97316]">
+              <User size={29} strokeWidth={2.2} />
+            </Link>
+            <Link to="/shop" aria-label="Wishlist" className="relative transition hover:text-[#F97316]">
+              <Heart size={29} strokeWidth={2.2} />
+            </Link>
+            <Link to="/shop" aria-label="Cart" className="relative transition hover:text-[#F97316]">
+              <ShoppingBag size={29} strokeWidth={2.2} />
+              <CounterBadge />
+            </Link>
+          </div>
         </div>
-      </div>
-    </header>
+      </header>
+
+      <nav className="fixed inset-x-0 bottom-4 z-50 px-4 md:hidden">
+        <div className="mx-auto flex max-w-md items-center justify-around gap-1 rounded-[30px] border border-white/60 bg-white/65 p-1.5 shadow-[0_18px_45px_rgba(15,23,42,0.2)] backdrop-blur-2xl">
+          {mobileLinks.map((link) => {
+            const Icon = link.icon;
+            return (
+              <NavLink key={link.label} to={link.to} className={mobileLinkClass}>
+                <Icon size={21} strokeWidth={2.2} />
+                <span>{link.label}</span>
+              </NavLink>
+            );
+          })}
+        </div>
+      </nav>
+    </>
   );
 }

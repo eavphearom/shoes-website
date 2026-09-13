@@ -22,7 +22,7 @@ export default function NotFoundPage() {
             className="h-10 w-full gap-2 sm:w-auto"
           >
             <ArrowLeft size={16} />
-            Back to Dashboard
+            Back to Home
           </Button>
 
           
