@@ -15,7 +15,7 @@ const transparentHeaderRoutes = ["/"];
 const desktopLinks = [
   { label: "Home", to: "/" },
   { label: "Shop", to: "/shop" },
-  { label: "Category", to: "/shop" },
+  // { label: "Category", to: "/shop" },
   { label: "About", to: "/about" },
   { label: "Contact", to: "/contact" },
   { label: "Blog", to: "/blog" },
@@ -24,7 +24,7 @@ const desktopLinks = [
 const mobileLinks = [
   { label: "Home", to: "/", icon: Home },
   { label: "Shop", to: "/shop", icon: Store },
-  { label: "Cart", to: "/shop", icon: ShoppingCart },
+  { label: "Cart", to: "/cart", icon: ShoppingCart },
   { label: "Account", to: "/login", icon: User },
 ];
 
@@ -35,9 +35,9 @@ function desktopLinkClass({ isActive }) {
 }
 
 function mobileLinkClass({ isActive }) {
-  return `flex flex-1 flex-col items-center justify-center gap-1 rounded-[22px] py-2 text-[10px] font-bold transition-all duration-300 ${
+  return `flex flex-1 flex-col items-center justify-center gap-1 rounded-full py-2 text-[10px] font-bold transition-all duration-300 ease-out active:scale-95 ${
     isActive
-      ? "bg-white/80 text-[#F97316] shadow-[0_10px_25px_rgba(15,23,42,0.12)] ring-1 ring-white/70"
+      ? "scale-[1.03] bg-white/85 text-[#F97316] shadow-[0_10px_25px_rgba(15,23,42,0.12)] ring-1 ring-white/70"
       : "text-[#64748B] hover:bg-white/45 hover:text-[#111827]"
   }`;
 }
@@ -74,8 +74,8 @@ export default function Navbar() {
           shouldShowTransparentHeader
             ? "absolute border-b border-transparent bg-transparent"
             : canUseTransparentHeader
-            ? "fixed border-b border-[#E5E7EB] bg-white/95 shadow-[0_10px_30px_rgba(15,23,42,0.08)] backdrop-blur"
-            : "sticky border-b border-[#E5E7EB] bg-white"
+              ? "fixed border-b border-[#E5E7EB] bg-white/95 shadow-[0_10px_30px_rgba(15,23,42,0.08)] backdrop-blur"
+              : "sticky border-b border-[#E5E7EB] bg-white"
         }`}
       >
         <div className="mx-auto flex h-[74px] max-w-[1800px] items-center justify-between px-4 sm:px-6 lg:px-12">
@@ -91,36 +91,68 @@ export default function Navbar() {
 
           <nav className="hidden items-center gap-4 md:flex lg:gap-9">
             {desktopLinks.map((link) => (
-              <NavLink key={link.label} to={link.to} className={desktopLinkClass}>
+              <NavLink
+                key={link.label}
+                to={link.to}
+                className={desktopLinkClass}
+              >
                 <span>{link.label}</span>
               </NavLink>
             ))}
           </nav>
 
           <div className="flex items-center gap-4 text-[#111827] md:hidden">
-            <button type="button" aria-label="Search" className="transition hover:text-[#F97316]">
+            <button
+              type="button"
+              aria-label="Search"
+              className="transition hover:text-[#F97316]"
+            >
               <Search size={23} strokeWidth={2.2} />
             </button>
-            <Link to="/shop" aria-label="Wishlist" className="relative transition hover:text-[#F97316]">
+            <Link
+              to="/shop"
+              aria-label="Wishlist"
+              className="relative transition hover:text-[#F97316]"
+            >
               <Heart size={23} strokeWidth={2.2} />
             </Link>
-            <Link to="/shop" aria-label="Cart" className="relative transition hover:text-[#F97316]">
+            <Link
+              to="/shop"
+              aria-label="Cart"
+              className="relative transition hover:text-[#F97316]"
+            >
               <ShoppingBag size={23} strokeWidth={2.2} />
               <CounterBadge />
             </Link>
           </div>
 
           <div className="hidden items-center gap-6 text-[#111827] md:flex">
-            <button type="button" aria-label="Search" className="transition hover:text-[#F97316]">
+            <button
+              type="button"
+              aria-label="Search"
+              className="transition hover:text-[#F97316]"
+            >
               <Search size={29} strokeWidth={2.2} />
             </button>
-            <Link to="/login" aria-label="Account" className="transition hover:text-[#F97316]">
+            <Link
+              to="/login"
+              aria-label="Account"
+              className="transition hover:text-[#F97316]"
+            >
               <User size={29} strokeWidth={2.2} />
             </Link>
-            <Link to="/shop" aria-label="Wishlist" className="relative transition hover:text-[#F97316]">
+            <Link
+              to="/shop"
+              aria-label="Wishlist"
+              className="relative transition hover:text-[#F97316]"
+            >
               <Heart size={29} strokeWidth={2.2} />
             </Link>
-            <Link to="/shop" aria-label="Cart" className="relative transition hover:text-[#F97316]">
+            <Link
+              to="/shop"
+              aria-label="Cart"
+              className="relative transition hover:text-[#F97316]"
+            >
               <ShoppingBag size={29} strokeWidth={2.2} />
               <CounterBadge />
             </Link>
@@ -129,11 +161,15 @@ export default function Navbar() {
       </header>
 
       <nav className="fixed inset-x-0 bottom-4 z-50 px-4 md:hidden">
-        <div className="mx-auto flex max-w-md items-center justify-around gap-1 rounded-[30px] border border-white/60 bg-white/65 p-1.5 shadow-[0_18px_45px_rgba(15,23,42,0.2)] backdrop-blur-2xl">
+        <div className="mx-auto flex max-w-md items-center justify-around gap-1 rounded-full border border-white/60 bg-white/65 p-1.5 shadow-[0_18px_45px_rgba(15,23,42,0.2)] backdrop-blur-sm transition-all duration-300 ease-out">
           {mobileLinks.map((link) => {
             const Icon = link.icon;
             return (
-              <NavLink key={link.label} to={link.to} className={mobileLinkClass}>
+              <NavLink
+                key={link.label}
+                to={link.to}
+                className={mobileLinkClass}
+              >
                 <Icon size={21} strokeWidth={2.2} />
                 <span>{link.label}</span>
               </NavLink>

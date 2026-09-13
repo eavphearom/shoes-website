@@ -10,6 +10,13 @@ export default function Home() {
       <div className="mx-auto max-w-7xl">
         <CollectionsSection />
         <FeaturedProducts />
+        <FeaturedProducts />
+        <FeaturedProducts />
+
+        <FeaturedProducts />
+
+        <FeaturedProducts />
+
       </div>
         <BenefitsSection />
     </div>

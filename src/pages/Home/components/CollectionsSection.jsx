@@ -9,7 +9,7 @@ import sneakersImage from "../../../assets/product/images.png";
 export default function CollectionsSection() {
   return (
     <section>
-      <div className="mx-auto max-w-7xl px-4 py-15 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-7xl px-4 pt-15 pb-10 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="mb-7 flex items-start justify-between gap-4">
           <div>
@@ -132,13 +132,13 @@ export default function CollectionsSection() {
         </div>
 
         {/* Mobile View All */}
-        <Link
+        {/* <Link
           to="/shop"
           className="mt-6 inline-flex items-center gap-1 text-[10px] font-extrabold uppercase tracking-wide text-[#07182E] transition-colors hover:text-[#F97316] sm:hidden"
         >
           View all categories
           <ArrowRight size={12} strokeWidth={2.8} />
-        </Link>
+        </Link> */}
       </div>
     </section>
   );
