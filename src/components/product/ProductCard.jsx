@@ -1,4 +1,4 @@
-import { Heart, Star } from "lucide-react";
+import { Heart, Plus, Star } from "lucide-react";
 import { Link } from "react-router-dom";
 
 function getProductPath(name) {
@@ -48,8 +48,7 @@ export default function ProductCard({
         >
           <Heart size={16} strokeWidth={2.3} />
         </button>
-
-       
+  
       </div>
 
       <div className="pt-2.5 sm:pt-3">
@@ -93,6 +92,13 @@ export default function ProductCard({
               In stock
             </span>
           )}
+          {/* <button
+            type="button"
+            className="flex ml-auto h-6 w-6 cursor-pointer items-center justify-center rounded-full bg-[#ec6614] text-white shadow-[0_10px_22px_rgba(15,23,42,0.16)] transition hover:bg-[#f68945] sm:h-8 sm:w-8"
+            aria-label="Add product to cart"
+          >
+            <Plus size={14} strokeWidth={2} />
+          </button> */}
         </div>
 
         <div className="mt-2 flex items-center justify-between gap-3 border-[#EEF2F7] sm:gap-4">

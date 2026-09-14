@@ -117,7 +117,7 @@ const Select = forwardRef(function Select({
         className={`flex h-9 w-full items-center justify-between rounded-lg border bg-white px-3 text-left text-sm outline-none transition disabled:cursor-not-allowed disabled:bg-[#F1F5F9] disabled:text-[#94A3B8] ${
           error
             ? "border-red-500"
-            : "border-[#D7DFEA] focus:border-[#2E7AF0] focus:ring-2 focus:ring-[#2E7AF0]/10"
+            : "border-[#D7DFEA] focus:border-[#E96400] focus:ring-2 focus:ring-[#E96400]/10"
         } ${className}`}
       >
         <span
@@ -159,7 +159,7 @@ const Select = forwardRef(function Select({
             className="flex w-full items-center justify-between px-3 py-2 text-left text-sm text-[#8A98AA] transition hover:bg-[#F7F9FC]"
           >
             {placeholder}
-            {!currentValue && <Check size={15} className="text-[#2E7AF0]" />}
+            {!currentValue && <Check size={15} className="text-[#E96400]" />}
           </button>
 
           {options.map((option) => {
@@ -172,7 +172,7 @@ const Select = forwardRef(function Select({
                 onClick={() => handleSelect(option.value)}
                 className={`flex w-full items-center justify-between px-3 py-2 text-left text-sm transition ${
                   isSelected
-                    ? "bg-[#EAF1FF] text-[#2E7AF0]"
+                    ? "bg-[#FFF3E8] text-[#E96400]"
                     : "text-[#03152B] hover:bg-[#F7F9FC]"
                 }`}
               >
@@ -203,3 +203,4 @@ const Select = forwardRef(function Select({
 });
 
 export default Select;
+

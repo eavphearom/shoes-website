@@ -1,11 +1,13 @@
 import {
   Heart,
   Home,
+  Menu,
   Search,
   ShoppingBag,
   ShoppingCart,
   Store,
   User,
+  X,
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
@@ -15,7 +17,6 @@ const transparentHeaderRoutes = ["/"];
 const desktopLinks = [
   { label: "Home", to: "/" },
   { label: "Shop", to: "/shop" },
-  // { label: "Category", to: "/shop" },
   { label: "About", to: "/about" },
   { label: "Contact", to: "/contact" },
   { label: "Blog", to: "/blog" },
@@ -42,6 +43,14 @@ function mobileLinkClass({ isActive }) {
   }`;
 }
 
+function mobileMenuLinkClass({ isActive }) {
+  return `flex items-center justify-between rounded-2xl px-4 py-3 text-sm font-bold transition ${
+    isActive
+      ? "bg-[#FFF3E8] text-[#F97316]"
+      : "text-[#111827] hover:bg-[#F8FAFC] hover:text-[#F97316]"
+  }`;
+}
+
 function CounterBadge() {
   return (
     <span className="absolute -right-2 -top-2 flex h-5 min-w-5 items-center justify-center rounded-full bg-[#F97316] px-1 text-[11px] font-bold leading-none text-white">
@@ -53,7 +62,7 @@ function CounterBadge() {
 export default function Navbar() {
   const { pathname } = useLocation();
   const [hasScrolled, setHasScrolled] = useState(false);
-  3;
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const canUseTransparentHeader = transparentHeaderRoutes.includes(pathname);
   const shouldShowTransparentHeader = canUseTransparentHeader && !hasScrolled;
 
@@ -68,6 +77,7 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+
   return (
     <>
       <header
@@ -79,16 +89,31 @@ export default function Navbar() {
               : "sticky border-b border-[#E5E7EB] bg-white"
         }`}
       >
-        <div className="mx-auto flex h-[74px] max-w-[1800px] items-center justify-between px-4 sm:px-6 lg:px-12">
-          <Link to="/" className="flex items-end gap-1">
-            <span className="text-3xl font-extrabold leading-none tracking-tight text-[#F97316]">
-              Go
-            </span>
-            <ShoppingBag size={34} className="-mb-1 text-[#F97316]" />
-            <span className="text-3xl font-extrabold leading-none tracking-tight text-[#111827]">
-              shoes
-            </span>
-          </Link>
+        <div className="mx-auto flex h-[64px] max-w-[1800px] items-center justify-between px-4 sm:px-6 md:h-[74px] lg:px-12">
+          <div className="flex items-center gap-2 sm:gap-3">
+            <button
+              type="button"
+              aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
+              aria-expanded={isMobileMenuOpen}
+              onClick={() => setIsMobileMenuOpen((current) => !current)}
+              className="flex h-10 w-10 items-center justify-center rounded-full cursor-pointer text-[#111827] transition hover:border-[#F97316] hover:text-[#F97316] md:hidden"
+            >
+              {isMobileMenuOpen ? <X size={16} /> : <Menu size={16} />}
+            </button>
+
+            <Link to="/" className="flex items-end gap-0.5 sm:gap-1">
+              <span className="text-xl font-extrabold leading-none tracking-tight text-[#F97316] sm:text-2xl md:text-3xl">
+                Go
+              </span>
+              <ShoppingBag
+                size={24}
+                className="-mb-0.5 text-[#F97316] sm:size-7 md:-mb-1 md:size-[34px]"
+              />
+              <span className="text-xl font-extrabold leading-none tracking-tight text-[#111827] sm:text-2xl md:text-3xl">
+                shoes
+              </span>
+            </Link>
+          </div>
 
           <nav className="hidden items-center gap-4 md:flex lg:gap-9">
             {desktopLinks.map((link) => (
@@ -102,18 +127,18 @@ export default function Navbar() {
             ))}
           </nav>
 
-          <div className="flex items-center gap-4 text-[#111827] md:hidden">
+          <div className="flex items-center gap-3 text-[#111827] sm:gap-4 md:hidden">
             <button
               type="button"
               aria-label="Search"
-              className="transition cursor-pointer hover:text-[#F97316]"
+              className="cursor-pointer transition hover:text-[#F97316]"
             >
               <Search size={20} strokeWidth={2.2} />
             </button>
             <Link
               to="/wishlist"
               aria-label="Wishlist"
-              className="relative transition cursor-pointer hover:text-[#F97316]"
+              className="relative cursor-pointer transition hover:text-[#F97316]"
             >
               <Heart size={20} strokeWidth={2.2} />
             </Link>
@@ -131,7 +156,7 @@ export default function Navbar() {
             <button
               type="button"
               aria-label="Search"
-              className="transition cursor-pointer hover:text-[#F97316]"
+              className="cursor-pointer transition hover:text-[#F97316]"
             >
               <Search size={22} strokeWidth={2.2} />
             </button>
@@ -160,6 +185,32 @@ export default function Navbar() {
             </Link>
           </div>
         </div>
+
+        <div
+          className={`md:hidden ${
+            isMobileMenuOpen
+              ? "pointer-events-auto translate-y-0 opacity-100"
+              : "pointer-events-none -translate-y-3 opacity-0"
+          } absolute left-0 right-0 top-full px-4 pt-2 transition-all duration-300 ease-out`}
+        >
+          <nav className="rounded-[1.5rem] border border-white/70 bg-white/95 p-2 shadow-[0_24px_60px_rgba(15,23,42,0.16)] backdrop-blur-xl">
+            {desktopLinks.map((link) => (
+              <NavLink
+                key={link.label}
+                to={link.to}
+                className={mobileMenuLinkClass}
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                <span>{link.label}</span>
+                <span className="text-xs text-[#94A3B8]">/</span>
+              </NavLink>
+            ))}
+            <NavLink to="/login" className={mobileMenuLinkClass} onClick={() => setIsMobileMenuOpen(false)}>
+              <span>Account</span>
+              <User size={16} />
+            </NavLink>
+          </nav>
+        </div>
       </header>
 
       <nav className="fixed inset-x-0 bottom-4 z-50 px-4 md:hidden">
@@ -182,3 +233,4 @@ export default function Navbar() {
     </>
   );
 }
+

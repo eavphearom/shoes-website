@@ -1,8 +1,35 @@
-import { Eye, EyeOff, LockKeyhole, Mail } from "lucide-react";
+import { ArrowLeft, Eye, EyeOff, LockKeyhole, Mail } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import heroShoe from "../../assets/auth-shoe.png";
+import googleIcon from "../../assets/google.png";
+import heroShoe from "../../assets/welcome_page/first_page.png";
 import Button from "../../components/ui/Button";
+
+function AuthInput({
+  label,
+  icon: Icon,
+  type = "text",
+  rightAction,
+  ...props
+}) {
+  return (
+    <label className="block text-sm font-semibold text-[#07182E]">
+      {label}
+      <span className="relative mt-2 block">
+        <Icon
+          size={17}
+          className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-[#8A98AA]"
+        />
+        <input
+          type={type}
+          className="h-12 w-full rounded-xl border border-[#E5EAF0] bg-[#FAFBFC] pl-11 pr-12 text-sm text-[#07182E] outline-none transition placeholder:text-[#9AA6B5] focus:border-[#E96400] focus:bg-white focus:ring-4 focus:ring-[#E96400]/10"
+          {...props}
+        />
+        {rightAction}
+      </span>
+    </label>
+  );
+}
 
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
@@ -15,90 +42,144 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="grid min-h-screen bg-white lg:grid-cols-[1fr_1fr]">
-      <aside className="hidden items-center justify-center bg-[#F8FAFC] p-10 lg:flex">
-        <div className="max-w-lg">
-          <Link to="/" className="text-sm font-bold uppercase tracking-[0.2em] text-[#2563EB]">
-            SoleStore
-          </Link>
-          <h1 className="mt-5 font-heading text-4xl font-bold leading-tight text-[#111827]">
-            Welcome back to your shoe shelf.
-          </h1>
-          <p className="mt-4 leading-7 text-[#4B5563]">
-            Sign in to keep track of favorite styles and a smoother checkout.
-          </p>
-          <img src={heroShoe} alt="Shoe" className="mt-10 w-full object-contain" />
-        </div>
-      </aside>
+    <main className="relative flex min-h-screen items-center justify-center overflow-hidden bg-[#F7F4EF] px-4 py-8 sm:px-6">
+      <div className="absolute -left-24 top-10 h-72 w-72 rounded-full bg-[#FFE0C8]" />
+      <div className="absolute -right-28 bottom-0 h-80 w-80 rounded-full bg-[#E96400]/10" />
 
-      <main className="flex min-h-screen items-center justify-center px-6 py-10">
-        <form onSubmit={handleSubmit} className="w-full max-w-md">
-          <Link to="/" className="mb-8 inline-block text-sm font-bold text-[#2563EB]">
+      <section className="relative grid w-full max-w-5xl overflow-hidden rounded-[2rem] border border-white/80 bg-white shadow-[0_28px_80px_rgba(15,23,42,0.12)] lg:grid-cols-[0.95fr_1.05fr]">
+        <div className="relative hidden bg-[#ff9b65] p-8 lg:block">
+          <Link
+            to="/"
+            className="inline-flex items-center gap-2 text-sm font-semibold text-white/80 transition hover:text-white"
+          >
+            <ArrowLeft size={16} />
             Back to store
           </Link>
-          <h2 className="font-heading text-3xl font-bold text-[#111827]">
-            Sign in
-          </h2>
-          <p className="mt-2 text-sm text-[#6B7280]">
-            Use your email and password to continue.
-          </p>
 
-          <div className="mt-7 grid gap-4">
-            <label className="grid gap-2 text-sm font-semibold text-[#111827]">
-              Email
-              <span className="relative">
-                <Mail
-                  size={16}
-                  className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-[#6B7280]"
-                />
-                <input
-                  type="email"
-                  className="h-11 w-full rounded-lg border border-[#D1D5DB] pl-10 pr-3 text-sm outline-none focus:border-[#2563EB]"
-                  placeholder="you@example.com"
-                />
-              </span>
-            </label>
-
-            <label className="grid gap-2 text-sm font-semibold text-[#111827]">
-              Password
-              <span className="relative">
-                <LockKeyhole
-                  size={16}
-                  className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-[#6B7280]"
-                />
-                <input
-                  type={showPassword ? "text" : "password"}
-                  className="h-11 w-full rounded-lg border border-[#D1D5DB] pl-10 pr-10 text-sm outline-none focus:border-[#2563EB]"
-                  placeholder="Enter password"
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword((current) => !current)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-[#6B7280]"
-                  aria-label={showPassword ? "Hide password" : "Show password"}
-                >
-                  {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
-                </button>
-              </span>
-            </label>
-
-            <Button
-              type="submit"
-              loading={loading}
-              className="h-11 w-full bg-[#111827] hover:bg-[#1F2937]"
-            >
-              Sign in
-            </Button>
+          <div className="mt-12">
+            <p className="font-michroma text-[10px] font-extrabold uppercase tracking-[0.28em] text-[#e1e0de]">
+              Go Shoes
+            </p>
+            <h1 className="mt-4 max-w-sm font-michroma text-3xl font-extrabold leading-tight text-white">
+              Step back into your style.
+            </h1>
+            <p className="mt-4 max-w-sm text-sm leading-7 text-white/65">
+              Sign in to save favorites, track orders, and keep checkout quick
+              for your next pair.
+            </p>
           </div>
 
-          <p className="mt-7 text-center text-sm text-[#6B7280]">
-            New here?{" "}
-            <Link to="/register" className="font-bold text-[#2563EB]">
-              Create an account
-            </Link>
-          </p>
-        </form>
-      </main>
-    </div>
+          <div className="absolute bottom-6 left-6 right-6 rounded-3xl p-2">
+            <img
+              src={heroShoe}
+              alt="Featured shoe"
+              className="mx-auto w-full object-contain rounded-3xl drop-shadow-[0_30px_40px_rgba(0,0,0,0.3)]"
+            />
+          </div>
+        </div>
+
+        <div className="p-6 sm:p-8 lg:p-10">
+          <Link
+            to="/"
+            className="mb-8 inline-flex items-center gap-2 text-sm font-semibold text-[#64748B] transition hover:text-[#E96400] lg:hidden"
+          >
+            <ArrowLeft size={16} />
+            Back to store
+          </Link>
+
+          <div className="mx-auto w-full max-w-md">
+            <div className="mb-8 text-center sm:text-left">
+              <p className="font-michroma text-[10px] font-extrabold uppercase tracking-[0.28em] text-[#E96400]">
+                Welcome Back
+              </p>
+              <h2 className="mt-4 font-michroma text-3xl font-extrabold text-[#07182E]">
+                Sign in
+              </h2>
+              <p className="mt-3 text-sm leading-6 text-[#64748B]">
+                Continue to your Go Shoes account.
+              </p>
+            </div>
+
+            <button
+              type="button"
+              className="flex h-12 cursor-pointer w-full items-center justify-center gap-3 rounded-xl border border-[#E5EAF0] bg-white text-sm font-semibold text-[#07182E] transition hover:border-[#F8C9A5] hover:bg-[#FFF8F2]"
+            >
+              <img src={googleIcon} alt="" className="h-5 w-5 object-contain" />
+              Login with Google
+            </button>
+
+            <div className="my-7 flex items-center gap-4">
+              <div className="h-px flex-1 bg-[#E5EAF0]" />
+              <span className="text-[11px] font-bold uppercase tracking-[0.18em] text-[#94A3B8]">
+                Or login with email
+              </span>
+              <div className="h-px flex-1 bg-[#E5EAF0]" />
+            </div>
+
+            <form onSubmit={handleSubmit} className="grid gap-5">
+              <AuthInput
+                label="Email Address"
+                icon={Mail}
+                type="email"
+                placeholder="you@example.com"
+                autoComplete="email"
+              />
+
+              <AuthInput
+                label="Password"
+                icon={LockKeyhole}
+                type={showPassword ? "text" : "password"}
+                placeholder="Enter password"
+                autoComplete="current-password"
+                rightAction={
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword((current) => !current)}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-[#8A98AA] transition hover:text-[#07182E]"
+                    aria-label={showPassword ? "Hide password" : "Show password"}
+                  >
+                    {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                  </button>
+                }
+              />
+
+              <div className="flex items-center justify-between gap-4 text-sm">
+                <label className="flex items-center gap-2 text-[#64748B]">
+                  <input
+                    type="checkbox"
+                    className="h-4 w-4 rounded border-[#CBD5E1] accent-[#E96400]"
+                  />
+                  Remember me
+                </label>
+                <button
+                  type="button"
+                  className="font-semibold text-[#E96400] transition hover:text-[#C95500]"
+                >
+                  Forgot password?
+                </button>
+              </div>
+
+              <Button
+                type="submit"
+                loading={loading}
+                className="h-12 w-full rounded-xl bg-[#E96400] text-white hover:bg-[#C95500]"
+              >
+                Sign in
+              </Button>
+            </form>
+
+            <p className="mt-7 text-center text-sm text-[#64748B]">
+              New here?{" "}
+              <Link
+                to="/register"
+                className="font-semibold text-[#E96400] transition hover:text-[#C95500]"
+              >
+                Create an account
+              </Link>
+            </p>
+          </div>
+        </div>
+      </section>
+    </main>
   );
 }
