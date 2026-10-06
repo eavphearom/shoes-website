@@ -1,67 +1,149 @@
-import { ShieldCheck } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Clock3 } from "lucide-react";
 import Modal from "../../../components/ui/Modal";
-import abaLogo from "../../../assets/payment/aba.jpeg";
-import khqrLogo from "../../../assets/payment/qr.png";
 
-function formatPrice(value) {
-  return `$${value.toFixed(2)}`;
+import { QRCodeCanvas } from "qrcode.react";
+
+// Convert backend date format: DD-MM-YYYY hh:mm:ss AM/PM.
+function parseExpiresAt(value) {
+  if (!value) return null;
+
+  const match = value.match(
+    /^(\d{2})-(\d{2})-(\d{4})\s+(\d{2}):(\d{2}):(\d{2})\s+(AM|PM)$/i,
+  );
+
+  if (!match) return null;
+
+  const [, day, month, year, hourValue, minute, second, period] = match;
+
+  let hour = Number(hourValue);
+
+  // Convert 12-hour time to 24-hour time.
+  if (period.toUpperCase() === "PM" && hour !== 12) {
+    hour += 12;
+  }
+
+  if (period.toUpperCase() === "AM" && hour === 12) {
+    hour = 0;
+  }
+
+  return new Date(
+    Number(year),
+    Number(month) - 1,
+    Number(day),
+    hour,
+    Number(minute),
+    Number(second),
+  );
 }
 
-export default function PaymentQrModal({ isOpen, onClose, total }) {
+// Format seconds as MM:SS.
+function formatCountdown(seconds) {
+  const minutes = Math.floor(seconds / 120);
+  const remainingSeconds = seconds % 120;
+
+  return `${String(minutes).padStart(2, "0")}:${String(
+    remainingSeconds,
+  ).padStart(2, "0")}`;
+}
+
+export default function PaymentQrModal({
+  isOpen,
+  onClose,
+  payment,
+}) {
+  const [secondsLeft, setSecondsLeft] = useState(0);
+
+  // Start countdown from the PayWay expiration time.
+  useEffect(() => {
+    if (!isOpen || !payment?.expires_at) {
+      return;
+    }
+
+    const expiresAt = parseExpiresAt(payment.expires_at);
+
+    if (!expiresAt) {
+      return;
+    }
+
+    const updateCountdown = () => {
+      const difference = Math.max(
+        0,
+        Math.floor((expiresAt.getTime() - Date.now()) / 1000),
+      );
+
+      setSecondsLeft(difference);
+
+      // Close the QR modal when payment time expires.
+      if (difference === 0) {
+        onClose();
+      }
+    };
+
+    // Update immediately when modal opens.
+    updateCountdown();
+
+    // Update countdown every second.
+    const timer = setInterval(updateCountdown, 1000);
+
+    return () => clearInterval(timer);
+  }, [isOpen, payment?.expires_at, onClose]);
+
   return (
-    <Modal isOpen={isOpen} onClose={onClose} title="Payment" size="lg">
-      <div className="grid gap-6 lg:grid-cols-[0.9fr_1.1fr]">
-        <div className="rounded-2xl bg-[#F8FAFC] p-5 text-center">
-          <div className="mx-auto flex h-12 w-24 items-center justify-center rounded-xl bg-white px-3 shadow-sm">
-            <img src={abaLogo} alt="ABA Pay" className="max-h-8 max-w-full object-contain" />
-          </div>
-          <div className="mt-5 rounded-2xl border border-[#E6EAF0] bg-white p-4 shadow-[0_12px_30px_rgba(15,23,42,0.08)]">
-            <img src={khqrLogo} alt="KHQR payment code" className="mx-auto aspect-square w-full max-w-[260px] object-contain" />
-          </div>
-          <p className="mt-4 text-xs font-medium text-[#64748B]">Scan with your banking app to pay securely.</p>
-        </div>
+    <Modal
+      isOpen={isOpen}
+      onClose={onClose}
+      showHeaderBorder={false}
+      title="ABA Pay KHQR"
+      size="lg"
+    >
+      <div className="grid gap-6 lg:grid-cols-1">
+        {/* QR payment section */}
+        <div className="rounded-2xl p-5 text-center">
 
-        <div className="flex flex-col justify-between gap-5">
-          <div>
-            <p className="font-michroma text-[10px] font-semibold uppercase tracking-[0.24em] text-[#E96400]">Go Shoes Payment</p>
-            <h3 className="mt-3 text-2xl font-semibold text-[#07182E]">Pay {formatPrice(total)}</h3>
-            <p className="mt-2 text-sm leading-6 text-[#64748B]">Please scan the QR code and complete your payment. Keep this modal open until the transaction is finished.</p>
-          </div>
-
-          <div className="rounded-2xl border border-[#E6EAF0] bg-white p-4">
-            <div className="flex items-center justify-between text-sm">
-              <span className="font-medium text-[#64748B]">Order total</span>
-              <span className="font-semibold text-[#07182E]">{formatPrice(total)}</span>
-            </div>
-            <div className="mt-3 flex items-center justify-between text-sm">
-              <span className="font-medium text-[#64748B]">Payment method</span>
-              <span className="font-semibold text-[#07182E]">KHQR / ABA</span>
-            </div>
-            <div className="mt-3 flex items-center justify-between text-sm">
-              <span className="font-medium text-[#64748B]">Delivery</span>
-              <span className="font-semibold text-[#07182E]">J&T Express</span>
-            </div>
-          </div>
-
-          <div className="rounded-2xl bg-[#FFF7F0] p-4">
-            <div className="flex gap-3">
-              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-white text-[#E96400]">
-                <ShieldCheck size={18} />
-              </span>
-              <div>
-                <p className="text-sm font-semibold text-[#07182E]">Secure checkout</p>
-                <p className="mt-1 text-xs leading-5 text-[#64748B]">Your order will be confirmed after successful payment verification.</p>
-              </div>
-            </div>
+          {/* Show official PayWay QR image first. */}
+          <div className="bg-white">
+            {payment?.qr_image ? (
+              <img
+                src={payment.qr_image}
+                alt="ABA KHQR"
+                className="mx-auto w-full max-w-[220px] object-contain"
+              />
+            ) : payment?.qr_string ? (
+              <QRCodeCanvas
+                value={payment.qr_string}
+                size={220}
+                level="M"
+                includeMargin
+              />
+            ) : (
+              <p className="py-20 text-sm text-[#64748B]">
+                QR code is unavailable.
+              </p>
+            )}
           </div>
 
-          <button
-            type="button"
-            onClick={onClose}
-            className="h-12 w-full cursor-pointer rounded-xl bg-[#E96400] text-sm font-semibold text-white transition hover:bg-[#C95500]"
-          >
-            I have paid
-          </button>
+          {/* QR expiration countdown */}
+          <div className="mx-auto mt-5 flex w-fit items-center gap-3 rounded-xl bg-[#FFF4EC] px-5 py-3">
+            <span className="flex h-9 w-9 items-center justify-center rounded-full bg-white text-[#E96400]">
+              <Clock3 size={18} />
+            </span>
+
+            <div className="text-left">
+              <p className="text-[11px] font-medium text-[#64748B]">
+                QR expires in
+              </p>
+
+              <p className="text-lg font-bold text-[#E96400]">
+                {formatCountdown(secondsLeft)}
+              </p>
+            </div>
+          </div>
+
+          {/* Payment instruction */}
+          <p className="mt-4 text-xs font-medium text-[#3e3f42]">
+            Scan with your banking app to pay securely.
+          </p>
         </div>
       </div>
     </Modal>

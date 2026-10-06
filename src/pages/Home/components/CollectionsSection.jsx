@@ -11,7 +11,7 @@ export default function CollectionsSection() {
     <section>
       <div className="mx-auto px-4 pb-8 pt-12 sm:px-6 sm:pb-10 sm:pt-14 lg:px-8 lg:pb-60 lg:pt-16">
         {/* Header */}
-        <div className="mb-7 flex items-start justify-between gap-4">
+        <div data-scroll-reveal="up" className="mb-7 flex items-start justify-between gap-4">
           <div>
             <h2 className=" font-michroma text-lg font-extrabold text-[#07182E] sm:text-xl">
               Curated Collections
@@ -36,7 +36,7 @@ export default function CollectionsSection() {
           {/* Main Card */}
           <Link
             to="/shop"
-            className="group relative h-[320px] overflow-hidden rounded-lg bg-[#F3F4F6] lg:h-full"
+            data-scroll-reveal="image" className="group relative h-[320px] overflow-hidden rounded-lg bg-[#F3F4F6] lg:h-full"
           >
             <img
               src={sneakersImage}
@@ -69,7 +69,7 @@ export default function CollectionsSection() {
           {/* Right Side */}
           <div className="grid gap-4 lg:h-full lg:grid-rows-[0.48fr_0.52fr]">
             {/* Top Two Cards */}
-            <div className="grid gap-4 sm:grid-cols-2 lg:h-full">
+            <div data-scroll-group="image" className="grid gap-4 sm:grid-cols-2 lg:h-full">
               <Link
                 to="/shop"
                 className="group relative h-[180px] overflow-hidden rounded-lg bg-[#F3F4F6] lg:h-full"
@@ -108,7 +108,7 @@ export default function CollectionsSection() {
             {/* Bottom Card */}
             <Link
               to="/shop"
-              className="group relative h-[220px] overflow-hidden rounded-lg bg-[#F3F4F6]"
+              data-scroll-reveal="image" className="group relative h-[220px] overflow-hidden rounded-lg bg-[#F3F4F6]"
             >
               <img
                 src={banner1}

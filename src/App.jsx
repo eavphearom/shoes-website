@@ -1,3 +1,4 @@
+import { Toaster } from "react-hot-toast";
 import { useLocation } from "react-router-dom";
 import AppRoutes from "./routes/AppRoutes";
 import SplashScreen from "./components/common/SplashScreen";
@@ -21,6 +22,7 @@ function App() {
     <>
       <SplashScreen enabled={showHomeSplash} />
       <AppRoutes />
+      <Toaster position="top-right" toastOptions={{ style: { borderRadius: "12px", color: "#07182E" } }} />
     </>
   );
 }

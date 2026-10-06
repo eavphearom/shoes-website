@@ -1,3 +1,4 @@
+import RequireAuth from "../components/common/RequireAuth";
 import { Route, Routes } from "react-router-dom";
 import LoginPage from "../pages/Auth/LoginPage";
 import NotFoundPage from "../pages/NotFoundPage";
@@ -12,6 +13,10 @@ import Cart from "../pages/cart/Cart";
 import Checkout from "../pages/checkout/Checkout";
 import ProductDetail from "../pages/product/ProductDetail";
 import RegisterPage from "../pages/Auth/RegisterPage";
+import AccountLayout from "../pages/account/AccountLayout";
+import AccountOverview from "../pages/account/AccountOverview";
+import Profile from "../pages/account/Profile";
+import Orders from "../pages/account/Orders";
 
 export default function AppRoutes() {
   return (
@@ -24,8 +29,13 @@ export default function AppRoutes() {
         <Route path="/contact" element={<Contact />} />
         <Route path="/wishlist" element={<Wishlist />} />
         <Route path="/cart" element={<Cart />} />
-        <Route path="/checkout" element={<Checkout />} />
-        <Route path="/product/:slug" element={<ProductDetail />} />
+        <Route path="/checkout" element={<RequireAuth><Checkout /></RequireAuth>} />
+        <Route path="/product/:id" element={<ProductDetail />} />
+        <Route path="/account" element={<RequireAuth><AccountLayout /></RequireAuth>}>
+          <Route index element={<AccountOverview />} />
+          <Route path="profile" element={<Profile />} />
+          <Route path="orders" element={<Orders />} />
+        </Route>
       </Route>
 
       <Route path="/login" element={<LoginPage />} />
@@ -34,4 +44,3 @@ export default function AppRoutes() {
     </Routes>
   );
 }
-

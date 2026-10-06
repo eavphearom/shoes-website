@@ -1,3 +1,4 @@
+import FavoriteButton from "./FavoriteButton";
 import { Star } from "lucide-react";
 import { Link } from "react-router-dom";
 
@@ -31,6 +32,7 @@ function StarsRow({ rating = "4.8", reviews = "120" }) {
 }
 
 export default function ProductListCard({
+  id,
   image,
   name,
   price,
@@ -42,7 +44,7 @@ export default function ProductListCard({
   description,
 }) {
   const displayPrice = priceRange || price;
-  const productPath = getProductPath(name);
+  const productPath = id != null ? `/product/${id}` : getProductPath(name);
 
   return (
     <article className="grid gap-5 rounded-lg border border-[#E6EAF0] bg-white p-3 sm:grid-cols-[220px_1fr] sm:p-4 lg:grid-cols-[280px_1fr]">
@@ -53,7 +55,7 @@ export default function ProductListCard({
         <img
           src={image}
           alt={name}
-          className="h-[150px] w-full object-contain"
+          className="h-[150px] w-full object-cover transition duration-300 sm:h-[180px] lg:h-[220px]"
         />
         {discount && (
           <span className="absolute left-3 top-3 rounded-full bg-[#F97316] px-3 py-1.5 text-xs font-extrabold text-white">
@@ -63,6 +65,7 @@ export default function ProductListCard({
       </Link>
 
       <div className="flex flex-col justify-center">
+        <FavoriteButton product={{ id, name, image, price }} className="self-end rounded-full p-2 text-[#746d64]" />
         {/* <p className="text-xs font-bold uppercase tracking-wide text-[#A7B2C3]">
           {category}
         </p> */}
@@ -77,7 +80,7 @@ export default function ProductListCard({
         </div>
         <div className="mt-3 flex items-center gap-3">
           <span className="text-lg font-semibold text-[#F97316]">
-            {displayPrice}
+           $ {displayPrice}
           </span>
           {oldPrice && (
             <span className="text-sm font-bold text-[#AAB6C8] line-through">
@@ -88,9 +91,11 @@ export default function ProductListCard({
             In stock
           </span>
         </div>
-        <p className="mt-3 max-w-3xl text-sm leading-6 text-[#5F6B7A]">
-          {description}
-        </p>
+        {description && (
+          <p className="mt-3 max-w-3xl whitespace-pre-line break-words text-sm leading-6 text-[#5F6B7A]">
+            {description}
+          </p>
+        )}
 
         <div className="flex items-center justify-between gap-4 border-[#EEF2F7] pt-4">
           <div className="flex items-center gap-2">

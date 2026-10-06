@@ -1,3 +1,4 @@
+import useScrollReveal from "../../hooks/useScrollReveal";
 import {
   ArrowRight,
   BadgeCheck,
@@ -104,11 +105,12 @@ function ValueCard({ value }) {
 }
 
 export default function About() {
+  const revealRef = useScrollReveal();
   return (
-    <div className="overflow-hidden bg-white">
+    <div ref={revealRef} className="overflow-hidden bg-white">
       <section className="relative bg-[#F8FAFC] px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
         <div className="mx-auto grid max-w-[1280px] items-center gap-10 lg:grid-cols-[0.95fr_1.05fr]">
-          <div>
+          <div data-scroll-reveal="left">
             <div className="mb-4 flex items-center gap-2 text-xs font-semibold text-[#64748B]">
               <Link to="/" className="transition hover:text-[#E96400]">
                 Home
@@ -134,7 +136,7 @@ export default function About() {
             </Link>
           </div>
 
-          <div className="relative">
+          <div data-scroll-reveal="image" className="relative">
             <div className="absolute -right-10 top-8 h-52 w-52 rounded-full bg-[#FFE8D6]" />
             <div className="relative overflow-hidden rounded-2xl bg-white shadow-[0_20px_50px_rgba(15,23,42,0.08)]">
               <img
@@ -150,7 +152,7 @@ export default function About() {
 
       <section className="px-4 py-14 sm:px-6 lg:px-8 lg:py-20">
         <div className="mx-auto grid max-w-[1280px] items-center gap-10 lg:grid-cols-[1fr_0.95fr]">
-          <div className="overflow-hidden rounded-2xl bg-[#F7F8FA]">
+          <div data-scroll-reveal="left" className="overflow-hidden rounded-2xl bg-[#F7F8FA]">
             <img
               src={storyImage}
               alt="Lifestyle shoes"
@@ -158,7 +160,7 @@ export default function About() {
             />
           </div>
 
-          <div>
+          <div data-scroll-reveal="right">
             <SectionLabel>Our Story</SectionLabel>
             <h2 className="mt-4 font-michroma text-2xl font-extrabold text-[#07182E] sm:text-3xl">
               Our Story
@@ -183,7 +185,7 @@ export default function About() {
 
       <section className="bg-[#FAFAFA] px-4 py-14 sm:px-6 lg:px-8">
         <div className="mx-auto grid max-w-[1280px] gap-5 lg:grid-cols-2">
-          <div className="rounded-2xl border border-[#E6EAF0] bg-white p-6 sm:p-8">
+          <div data-scroll-reveal="up" className="rounded-2xl border border-[#E6EAF0] bg-white p-6 sm:p-8">
             <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#FFF3E8] text-[#E96400]">
               <Target size={23} />
             </span>
@@ -198,7 +200,7 @@ export default function About() {
             </p>
           </div>
 
-          <div className="rounded-2xl border border-[#E6EAF0] bg-white p-6 sm:p-8">
+          <div data-scroll-reveal="up" className="rounded-2xl border border-[#E6EAF0] bg-white p-6 sm:p-8">
             <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#FFF3E8] text-[#E96400]">
               <Sparkles size={23} />
             </span>
@@ -216,7 +218,7 @@ export default function About() {
 
       <section className="px-4 py-14 sm:px-6 lg:px-8 lg:py-20">
         <div className="mx-auto max-w-[1280px]">
-          <div className="mb-9 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+          <div data-scroll-reveal="up" className="mb-9 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
             <div>
               <SectionLabel>Why Choose Us</SectionLabel>
               <h2 className="mt-3 font-michroma text-2xl font-extrabold text-[#07182E] sm:text-3xl">
@@ -229,7 +231,7 @@ export default function About() {
             </p>
           </div>
 
-          <div className="grid gap-7 sm:grid-cols-2 lg:grid-cols-4">
+          <div data-scroll-group="up" className="grid gap-7 sm:grid-cols-2 lg:grid-cols-4">
             {benefits.map((benefit) => (
               <BenefitItem key={benefit.title} benefit={benefit} />
             ))}
@@ -239,14 +241,14 @@ export default function About() {
 
       <section className="bg-[#FAFAFA] px-4 py-14 sm:px-6 lg:px-8 lg:py-20">
         <div className="mx-auto max-w-[1280px]">
-          <div className="mb-9 text-center">
+          <div data-scroll-reveal="up" className="mb-9 text-center">
             <SectionLabel>Our Values</SectionLabel>
             <h2 className="mt-3 font-michroma text-2xl font-extrabold text-[#07182E] sm:text-3xl">
               What We Stand For
             </h2>
           </div>
 
-          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          <div data-scroll-group="up" className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {values.map((value) => (
               <ValueCard key={value.title} value={value} />
             ))}
@@ -274,7 +276,7 @@ export default function About() {
             </Link>
           </div>
 
-          <div className="relative min-h-[220px] rounded-2xl bg-white/8">
+          <div data-scroll-reveal="image" className="relative min-h-[220px] rounded-2xl bg-white/8">
             <img
               src={productImage}
               alt="Featured shoe"

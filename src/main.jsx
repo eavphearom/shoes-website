@@ -1,3 +1,4 @@
+import AuthProvider from "./context/AuthProvider";
 import { createRoot } from "react-dom/client";
 import "./index.css";
 import App from "./App.jsx";
@@ -7,6 +8,6 @@ import ScrollToTop from "./components/common/ScrollToTop.jsx";
 createRoot(document.getElementById("root")).render(
   <BrowserRouter>
     <ScrollToTop />
-    <App />
+    <AuthProvider><App /></AuthProvider>
   </BrowserRouter>,
 );

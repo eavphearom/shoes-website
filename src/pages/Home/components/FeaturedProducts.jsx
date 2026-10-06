@@ -12,12 +12,14 @@ const featuredProducts = [
     oldPrice: "$32",
     discount: "-6%",
     rating: 5,
+    reviews: "120",
   },
   {
     name: "JAVIO Stylish Sports Casual Gym Cycling",
     priceRange: "$30 - $32",
     discount: "-6%",
     rating: 5,
+    reviews: "120",
   },
   {
     name: "Hikking Trekking Climbing Mountain",
@@ -25,6 +27,7 @@ const featuredProducts = [
     oldPrice: "$31",
     discount: "-3%",
     rating: 4,
+    reviews: "120",
   },
   {
     name: "Hikking Trekking Climbing Mountain",
@@ -32,6 +35,7 @@ const featuredProducts = [
     oldPrice: "$31",
     discount: "-3%",
     rating: 4,
+    reviews: "120",
   },
   {
     name: "Hikking Trekking Climbing Mountain",
@@ -39,6 +43,7 @@ const featuredProducts = [
     oldPrice: "$31",
     discount: "-3%",
     rating: 4,
+    reviews: "120",
   },
 ];
 
@@ -68,7 +73,8 @@ export default function FeaturedProducts() {
     }
 
     const firstCard = carousel.querySelector("[data-carousel-card]");
-    const cardWidth = firstCard?.getBoundingClientRect().width || carousel.clientWidth;
+    const cardWidth =
+      firstCard?.getBoundingClientRect().width || carousel.clientWidth;
     const scrollDistance = direction === "left" ? -cardWidth : cardWidth;
 
     carousel.scrollBy({
@@ -133,7 +139,7 @@ export default function FeaturedProducts() {
             <div
               key={`${product.name}-${index}`}
               data-carousel-card
-              className="min-w-0 shrink-0 basis-[72%] snap-start sm:basis-[calc((100%-20px)/2)] md:basis-[calc((100%-40px)/3)] lg:basis-[calc((100%-60px)/4)]"
+              className="min-w-0 shrink-0 basis-[72%] snap-start sm:basis-[calc((100%-20px)/2)] md:basis-[calc((100%-40px)/3)] lg:basis-[calc((100%-60px)/5)]"
             >
               <ProductCard image={productImage} {...product} />
             </div>

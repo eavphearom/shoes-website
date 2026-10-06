@@ -1,3 +1,4 @@
+import useShopping from "../../hooks/useShopping";
 import {
   Heart,
   Home,
@@ -26,7 +27,7 @@ const mobileLinks = [
   { label: "Home", to: "/", icon: Home },
   { label: "Shop", to: "/shop", icon: Store },
   { label: "Cart", to: "/cart", icon: ShoppingCart },
-  { label: "Account", to: "/login", icon: User },
+  { label: "Account", to: "/account", icon: User },
 ];
 
 function desktopLinkClass({ isActive }) {
@@ -51,15 +52,16 @@ function mobileMenuLinkClass({ isActive }) {
   }`;
 }
 
-function CounterBadge() {
+function CounterBadge({ count }) {
   return (
     <span className="absolute -right-2 -top-2 flex h-5 min-w-5 items-center justify-center rounded-full bg-[#F97316] px-1 text-[11px] font-bold leading-none text-white">
-      0
+      {count}
     </span>
   );
 }
 
 export default function Navbar() {
+  const { cartCount, favorites } = useShopping();
   const { pathname } = useLocation();
   const [hasScrolled, setHasScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -141,6 +143,7 @@ export default function Navbar() {
               className="relative cursor-pointer transition hover:text-[#F97316]"
             >
               <Heart size={20} strokeWidth={2.2} />
+              <CounterBadge count={favorites.length} />
             </Link>
             <Link
               to="/cart"
@@ -148,7 +151,7 @@ export default function Navbar() {
               className="relative transition hover:text-[#F97316]"
             >
               <ShoppingBag size={20} strokeWidth={2.2} />
-              <CounterBadge />
+              <CounterBadge count={cartCount} />
             </Link>
           </div>
 
@@ -167,6 +170,7 @@ export default function Navbar() {
               className="relative transition hover:text-[#F97316]"
             >
               <Heart size={22} strokeWidth={2.2} />
+              <CounterBadge count={favorites.length} />
             </Link>
             <Link
               to="/cart"
@@ -174,10 +178,10 @@ export default function Navbar() {
               className="relative transition hover:text-[#F97316]"
             >
               <ShoppingBag size={22} strokeWidth={2.2} />
-              <CounterBadge />
+              <CounterBadge count={cartCount} />
             </Link>
             <Link
-              to="/login"
+              to="/account"
               aria-label="Account"
               className="transition hover:text-[#F97316]"
             >

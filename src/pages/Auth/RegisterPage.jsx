@@ -1,6 +1,8 @@
+import authService from "../../services/authService";
+import { safeReturnPath } from "../../services/authSession";
 import { ArrowLeft, Eye, EyeOff, LockKeyhole, Mail, User } from "lucide-react";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import googleIcon from "../../assets/google.png";
 import heroShoe from "../../assets/welcome_page/first_page.png";
 import Button from "../../components/ui/Button";
@@ -14,7 +16,7 @@ function AuthInput({
   ...props
 }) {
   return (
-    <label className="block text-sm font-semibold text-[#07182E]">
+    <label className="block text-sm font-medium text-[#202e40]">
       {label}
       <span className="relative mt-2 block">
         <Icon
@@ -23,7 +25,7 @@ function AuthInput({
         />
         <input
           type={type}
-          className="h-12 w-full rounded-xl border border-[#E5EAF0] bg-[#FAFBFC] pl-11 pr-12 text-sm text-[#07182E] outline-none transition placeholder:text-[#9AA6B5] focus:border-[#E96400] focus:bg-white focus:ring-4 focus:ring-[#E96400]/10"
+          className="h-12 w-full rounded-xl border border-[#E5EAF0] bg-[#FAFBFC] pl-11 pr-12 text-sm text-[#202e40] outline-none transition placeholder:text-[#9AA6B5] focus:border-[#E96400] focus:bg-white focus:ring-4 focus:ring-[#E96400]/10"
           {...props}
         />
         {rightAction}
@@ -39,8 +41,8 @@ function AuthInput({
 
 export default function RegisterPage() {
   const [form, setForm] = useState({
-    firstName: "",
-    lastName: "",
+    username: "",
+    phone: "",
     email: "",
     password: "",
     confirmPassword: "",
@@ -59,10 +61,21 @@ export default function RegisterPage() {
     }));
   };
 
-  const handleSubmit = (event) => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [error, setError] = useState("");
+  const returnTo = safeReturnPath(location.state?.from);
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    setLoading(true);
-    window.setTimeout(() => setLoading(false), 700);
+    if (loading) return;
+    if (form.password !== form.confirmPassword) { setError("Passwords do not match."); return; }
+    if (!form.acceptedTerms) { setError("Please accept the terms to continue."); return; }
+    setLoading(true); setError("");
+    try {
+      await authService.register({ username: form.username.trim(), email: form.email.trim(), password: form.password, phone: form.phone.trim() });
+      navigate("/login", { replace: true, state: { from: returnTo, message: "Account created. Sign in to continue." } });
+    } catch (error) { setError(error.response?.data?.message || error.message || "Unable to create your account."); }
+    finally { setLoading(false); }
   };
 
   return (
@@ -141,12 +154,13 @@ export default function RegisterPage() {
             </div>
 
             <form onSubmit={handleSubmit} className="grid gap-5">
+              {error && <p role="alert" className="text-sm text-red-500">{error}</p>}
               <AuthInput
                 label="Username"
                 icon={User}
-                name="firstName"
+                name="username" required
                 placeholder="Your username"
-                value={form.firstName}
+                value={form.username}
                 onChange={handleChange}
                 autoComplete="username"
               />
@@ -154,7 +168,7 @@ export default function RegisterPage() {
               <AuthInput
                 label="Email Address"
                 icon={Mail}
-                name="email"
+                name="email" required
                 type="email"
                 placeholder="you@example.com"
                 value={form.email}
@@ -162,16 +176,19 @@ export default function RegisterPage() {
                 autoComplete="email"
               />
 
+              <AuthInput label="Phone" icon={User} name="phone" type="tel" required
+                value={form.phone} onChange={handleChange} autoComplete="tel" placeholder="012345678" />
+
               <AuthInput
                 label="Password"
                 icon={LockKeyhole}
-                name="password"
+                name="password" required minLength={6}
                 type={showPassword ? "text" : "password"}
                 placeholder="Create a password"
                 value={form.password}
                 onChange={handleChange}
                 autoComplete="new-password"
-                helperText="Use at least 8 characters."
+                helperText="Use at least 6 characters."
                 rightAction={
                   <button
                     type="button"
@@ -187,7 +204,7 @@ export default function RegisterPage() {
               <AuthInput
                 label="Confirm Password"
                 icon={LockKeyhole}
-                name="confirmPassword"
+                name="confirmPassword" required minLength={6}
                 type={showConfirmPassword ? "text" : "password"}
                 placeholder="Confirm your password"
                 value={form.confirmPassword}
@@ -242,6 +259,7 @@ export default function RegisterPage() {
               Already have an account?{" "}
               <Link
                 to="/login"
+                state={{ from: returnTo }}
                 className="font-semibold text-[#E96400] transition hover:text-[#C95500]"
               >
                 Sign in

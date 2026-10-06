@@ -5,7 +5,7 @@ export function LocationSection() {
   return (
     <section className="px-4 pb-16 sm:px-6 lg:px-8 lg:pb-20">
       <div className="mx-auto grid max-w-[1280px] overflow-hidden rounded-3xl border border-[#E6EAF0] bg-white shadow-[0_18px_50px_rgba(15,23,42,0.06)] lg:grid-cols-[0.85fr_1.15fr]">
-        <div className="p-6 sm:p-8 lg:p-10">
+        <div data-scroll-reveal="up" className="p-6 sm:p-8 lg:p-10">
           <SectionLabel>Visit Us</SectionLabel>
           <h2 className="mt-3 font-michroma text-2xl font-extrabold text-[#07182E] sm:text-3xl">
             Our Store Location

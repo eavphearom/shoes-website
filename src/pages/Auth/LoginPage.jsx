@@ -1,6 +1,8 @@
+import useAuth from "../../hooks/useAuth";
+import { safeReturnPath } from "../../services/authSession";
 import { ArrowLeft, Eye, EyeOff, LockKeyhole, Mail } from "lucide-react";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import googleIcon from "../../assets/google.png";
 import heroShoe from "../../assets/welcome_page/first_page.png";
 import Button from "../../components/ui/Button";
@@ -13,7 +15,7 @@ function AuthInput({
   ...props
 }) {
   return (
-    <label className="block text-sm font-semibold text-[#07182E]">
+    <label className="block text-sm font-medium text-[#18293e]">
       {label}
       <span className="relative mt-2 block">
         <Icon
@@ -22,7 +24,7 @@ function AuthInput({
         />
         <input
           type={type}
-          className="h-12 w-full rounded-xl border border-[#E5EAF0] bg-[#FAFBFC] pl-11 pr-12 text-sm text-[#07182E] outline-none transition placeholder:text-[#9AA6B5] focus:border-[#E96400] focus:bg-white focus:ring-4 focus:ring-[#E96400]/10"
+          className="h-12 w-full rounded-xl border border-[#E5EAF0] bg-[#FAFBFC] pl-11 pr-12 text-sm text-[#202e40] outline-none transition placeholder:text-[#9AA6B5] focus:border-[#E96400] focus:bg-white focus:ring-4 focus:ring-[#E96400]/10"
           {...props}
         />
         {rightAction}
@@ -35,10 +37,21 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (event) => {
+  const { login } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [error, setError] = useState("");
+  const returnTo = safeReturnPath(location.state?.from);
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    setLoading(true);
-    window.setTimeout(() => setLoading(false), 600);
+    if (loading) return;
+    const fields = new FormData(event.currentTarget);
+    setLoading(true); setError("");
+    try {
+      await login({ email: fields.get("email").trim(), password: fields.get("password") }, fields.get("remember") === "on");
+      navigate(returnTo, { replace: true });
+    } catch (error) { setError(error.response?.data?.message || error.message || "Unable to sign in."); }
+    finally { setLoading(false); }
   };
 
   return (
@@ -116,9 +129,12 @@ export default function LoginPage() {
               <div className="h-px flex-1 bg-[#E5EAF0]" />
             </div>
 
+            {location.state?.message && <p role="status" className="mb-4 text-sm text-[#64748B]">{location.state.message}</p>}
             <form onSubmit={handleSubmit} className="grid gap-5">
+              {error && <p role="alert" className="text-sm text-red-500">{error}</p>}
               <AuthInput
                 label="Email Address"
+                name="email" required
                 icon={Mail}
                 type="email"
                 placeholder="you@example.com"
@@ -127,6 +143,7 @@ export default function LoginPage() {
 
               <AuthInput
                 label="Password"
+                name="password" required
                 icon={LockKeyhole}
                 type={showPassword ? "text" : "password"}
                 placeholder="Enter password"
@@ -146,14 +163,14 @@ export default function LoginPage() {
               <div className="flex items-center justify-between gap-4 text-sm">
                 <label className="flex items-center gap-2 text-[#64748B]">
                   <input
-                    type="checkbox"
+                    type="checkbox" name="remember" defaultChecked
                     className="h-4 w-4 rounded border-[#CBD5E1] accent-[#E96400]"
                   />
                   Remember me
                 </label>
                 <button
                   type="button"
-                  className="font-semibold text-[#E96400] transition hover:text-[#C95500]"
+                  className="font-medium text-[#E96400] transition hover:text-[#C95500]"
                 >
                   Forgot password?
                 </button>
@@ -172,7 +189,8 @@ export default function LoginPage() {
               New here?{" "}
               <Link
                 to="/register"
-                className="font-semibold text-[#E96400] transition hover:text-[#C95500]"
+                state={{ from: returnTo }}
+                className="font-medium text-[#E96400] transition hover:text-[#C95500]"
               >
                 Create an account
               </Link>

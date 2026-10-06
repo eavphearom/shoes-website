@@ -16,7 +16,7 @@ export default function FeatureBrandsSection() {
   return (
     <section className="px-4 py-10 sm:px-6 lg:px-8">
       <div className="mx-auto">
-        <div className="mb-7 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+        <div data-scroll-reveal="up" className="mb-7 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
           <div>
             <p className="font-michroma text-[10px] font-extrabold uppercase tracking-[0.28em] text-[#F97316]">
               Trusted names
@@ -31,7 +31,7 @@ export default function FeatureBrandsSection() {
           </p>
         </div>
 
-        <div className="flex gap-3 overflow-x-auto p-3 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:grid lg:grid-cols-5 lg:overflow-visible lg:pb-0">
+        <div data-scroll-group="image" className="flex gap-3 overflow-x-auto p-3 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:grid lg:grid-cols-5 lg:overflow-visible lg:pb-0">
           {brands.map((brand) => (
             <div
               key={brand.name}

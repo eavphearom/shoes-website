@@ -6,7 +6,7 @@ export default function SaleBannerSection() {
   return (
     <section className="px-4 py-10 sm:px-6 lg:px-8">
       <div className="relative mx-auto overflow-hidden rounded-2xl shadow-[0_18px_45px_rgba(15,23,42,0.16)]">
-        <img
+        <img data-scroll-reveal="image"
           src={saleBanner}
           alt="Runner wearing orange shoes"
           className="h-[360px] w-full object-cover object-center sm:h-[390px] lg:h-[430px]"
@@ -14,7 +14,7 @@ export default function SaleBannerSection() {
         <div className="absolute inset-0 bg-gradient-to-r from-[#07111F]/95 via-[#07111F]/62 to-transparent" />
         <div className="absolute inset-0 bg-gradient-to-t from-[#07111F]/35 via-transparent to-transparent" />
 
-        <div className="absolute inset-y-0 left-0 flex max-w-2xl flex-col justify-center px-6 py-8 text-white sm:px-10 lg:px-16">
+        <div data-scroll-reveal="left" className="absolute inset-y-0 left-0 flex max-w-2xl flex-col justify-center px-6 py-8 text-white sm:px-10 lg:px-16">
           <span className="mb-5 inline-flex w-fit items-center gap-2 rounded-full bg-[#F97316]/20 px-3 py-1.5 text-[11px] font-extrabold uppercase tracking-wide text-[#FB923C] ring-1 ring-[#F97316]/35">
             <span className="h-1.5 w-1.5 rounded-full bg-[#F97316]" />
             Limited time event

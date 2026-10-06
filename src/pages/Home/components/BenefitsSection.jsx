@@ -27,7 +27,7 @@ export default function BenefitsSection() {
   return (
     <section className="mx-auto w-full px-4 py-10 sm:px-6 lg:px-20 bg-[#f8f8f8]">
       <div className="mx-auto">
-        <div className="mb-10 text-center">
+        <div data-scroll-reveal="up" className="mb-10 text-center">
           <p className="font-michroma text-[10px] font-extrabold uppercase tracking-[0.28em] text-[#F97316]">
             Why choose Go-Shoes
           </p>
@@ -39,7 +39,7 @@ export default function BenefitsSection() {
           </p>
         </div>
 
-        <div className="grid gap-y-8 rounded-2xl bg-white/40 py-3 sm:grid-cols-2 lg:grid-cols-4">
+        <div data-scroll-group="up" className="grid gap-y-8 rounded-2xl bg-white/40 py-3 sm:grid-cols-2 lg:grid-cols-4">
           {benefits.map((benefit, index) => {
             const Icon = benefit.icon;
 

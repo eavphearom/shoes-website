@@ -1,3 +1,4 @@
+import { readSession, clearSession } from "./authSession";
 import axios from "axios";
 
 const apiClient = axios.create({
@@ -9,7 +10,7 @@ const apiClient = axios.create({
 });
 
 apiClient.interceptors.request.use((config) => {
-  const token = localStorage.getItem("token");
+  const token = readSession()?.token;
 
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
@@ -22,7 +23,8 @@ apiClient.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
-      localStorage.removeItem("token");
+      clearSession();
+      window.dispatchEvent(new Event("auth-expired"));
     }
 
     return Promise.reject(error);

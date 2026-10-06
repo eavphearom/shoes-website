@@ -1,3 +1,4 @@
+import useScrollReveal from "../../hooks/useScrollReveal";
 const posts = [
   {
     title: "How to choose running shoes for daily training",
@@ -17,9 +18,10 @@ const posts = [
 ];
 
 export default function Blog() {
+  const revealRef = useScrollReveal();
   return (
-    <section className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
-      <div className="max-w-2xl">
+    <section ref={revealRef} className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
+      <div data-scroll-reveal="up" className="max-w-2xl">
         <p className="text-sm font-bold uppercase tracking-[0.2em] text-[#2563EB]">
           Blog
         </p>
@@ -31,7 +33,7 @@ export default function Blog() {
         </p>
       </div>
 
-      <div className="mt-10 grid gap-5 md:grid-cols-3">
+      <div data-scroll-group="up" className="mt-10 grid gap-5 md:grid-cols-3">
         {posts.map((post) => (
           <article
             key={post.title}

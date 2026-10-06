@@ -7,7 +7,7 @@ export function ContactHero() {
   return (
     <section className="relative bg-[#F8F4EF] px-4 py-12 sm:px-6 lg:px-8 lg:py-14">
       <div className="mx-auto grid max-w-[1280px] items-center gap-8 lg:grid-cols-[0.9fr_1.1fr]">
-        <div className="relative z-10">
+        <div data-scroll-reveal="up" className="relative z-10">
           <div className="mb-4 flex items-center gap-2 text-xs font-semibold text-[#64748B]">
             <Link to="/" className="transition hover:text-[#E96400]">
               Home
@@ -43,7 +43,7 @@ export function ContactHero() {
 
         <div className="relative">
           <div className="absolute -right-12 top-8 h-56 w-56 rounded-full bg-[#FFDCC1]" />
-          <div className="relative overflow-hidden rounded-3xl bg-white shadow-[0_22px_55px_rgba(15,23,42,0.08)]">
+          <div data-scroll-reveal="image" className="relative overflow-hidden rounded-3xl bg-white shadow-[0_22px_55px_rgba(15,23,42,0.08)]">
             <img
               src={heroImage}
               alt="Runner wearing shoes"

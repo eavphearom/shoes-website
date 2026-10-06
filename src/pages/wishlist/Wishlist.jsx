@@ -1,33 +1,10 @@
 import { Link } from "react-router-dom";
 import { Heart } from "lucide-react";
-import productImage from "../../assets/product/image.png";
+import useShopping from "../../hooks/useShopping";
 import ProductCard from "../../components/product/ProductCard";
 
-const wishlistProducts = [
-  {
-    name: "Campus First Mesh Running Sports",
-    price: "$30",
-    oldPrice: "$32",
-    discount: "-6%",
-  },
-  {
-    name: "JAVIO Stylish Sports Casual Gym Cycling",
-    priceRange: "$30 - $32",
-    discount: "-6%",
-  },
-  {
-    name: "Hikking Trekking Climbing Mountain",
-    price: "$30",
-    oldPrice: "$31",
-    discount: "-3%",
-  },
-  {
-    name: "Nike Air Force 1 Low LX Mica Green",
-    priceRange: "$32 - $33",
-  },
-];
-
 export default function Wishlist() {
+  const { favorites: wishlistProducts } = useShopping();
   return (
     <section className="mx-auto min-h-[calc(100vh-240px)] max-w-7xl px-4 py-10 sm:px-6 sm:py-12 lg:px-8 lg:py-14">
       <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
@@ -52,11 +29,11 @@ export default function Wishlist() {
         </Link>
       </div>
 
+      {wishlistProducts.length === 0 && <p className="mt-9 text-[#64748B]">Your wishlist is empty. Tap a heart to save a product.</p>}
       <div className="mt-9 grid grid-cols-2 gap-4 sm:gap-5 md:grid-cols-3 lg:grid-cols-4">
         {wishlistProducts.map((product, index) => (
           <ProductCard
             key={`${product.name}-${index}`}
-            image={productImage}
             {...product}
           />
         ))}
